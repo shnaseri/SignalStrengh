@@ -3,24 +3,31 @@ package com.shnaseri.strenghmap.presentation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import javax.inject.Provider
 
-class PagerAdapter(fm: FragmentManager, private var count: Int) : FragmentPagerAdapter(fm) {
+class PagerAdapter(
+    fm: FragmentManager,
+    private var count: Int,
+    private val dataFragment: DataFragment,
+    private val trackListFragment: TrackListFragment,
+    private val trackMapFragment: TrackMapFragment,
+) : FragmentPagerAdapter(fm) {
     override fun getCount(): Int = count
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                DataFragment.instance!!
+                dataFragment
             }
 
             1 -> {
-                TrackListFragment.instance!!
+                trackListFragment
             }
 
             2 -> {
-                TrackMapFragment()
+                trackMapFragment
             }
-            else -> TrackMapFragment()
+            else -> trackMapFragment
         }
     }
 

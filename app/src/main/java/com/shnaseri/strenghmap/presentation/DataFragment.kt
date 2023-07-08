@@ -22,7 +22,12 @@ import com.shnaseri.strenghmap.telephony.TelephonyInfo
 import java.util.Locale
 import javax.inject.Inject
 
-class DataFragment @Inject constructor() : Fragment(), PhoneStateListenerInterface {
+class DataFragment constructor(
+    var mTrackingManager: TrackingManager,
+    var mTelephonyInfo: TelephonyInfo,
+    var mCustomPhoneStateListener: CustomPhoneStateListener,
+    var mDatabaseManager: AppDatabase
+) : Fragment(), PhoneStateListenerInterface {
     private var mSignalStrenghtsTextView: TextView? = null
     private var mNetworkTypeTextView: TextView? = null
     private var mOperatorTextView: TextView? = null
@@ -35,19 +40,7 @@ class DataFragment @Inject constructor() : Fragment(), PhoneStateListenerInterfa
     private var mButtonStopService: Button? = null
     private var queryAll: Button? = null
     private lateinit var binding: ActivityMainBinding
-
-    @Inject
-    lateinit var mTrackingManager: TrackingManager
     private var mTrackId: Long = 0
-
-    @Inject
-    lateinit var mTelephonyInfo: TelephonyInfo
-
-    @Inject
-    lateinit var mCustomPhoneStateListener: CustomPhoneStateListener
-
-    @Inject
-    lateinit var mDatabaseManager: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -257,13 +250,5 @@ class DataFragment @Inject constructor() : Fragment(), PhoneStateListenerInterfa
     companion object {
         const val TAG = "mobilenetworkstracker"
         private const val ARG_TRACK_ID = "TRACK_ID"
-        private var sDataFragment: DataFragment? = null
-        val instance: DataFragment?
-            get() {
-                if (sDataFragment == null) {
-                    sDataFragment = DataFragment()
-                }
-                return sDataFragment
-            }
     }
 }

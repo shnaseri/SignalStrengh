@@ -18,17 +18,15 @@ import com.shnaseri.strenghmap.loaders.TrackLoader
 import com.shnaseri.strenghmap.model.Track
 import javax.inject.Inject
 
-class TrackListFragment @Inject constructor() :
+class TrackListFragment constructor(
+    var mTrackingManager: TrackingManager,
+    var mDatabaseManager: AppDatabase
+) :
     ListFragment(),
     LoaderManager.LoaderCallbacks<List<*>?> {
     private var mCallbacks: Callbacks? = null
     private var mTrackId: Long = 0
 
-    @Inject
-    lateinit var mTrackingManager: TrackingManager
-
-    @Inject
-    lateinit var mDatabaseManager: AppDatabase
     private val mTracks: ArrayList<Track>? = null
 
     /*
@@ -52,7 +50,7 @@ class TrackListFragment @Inject constructor() :
                     ) + " date " + trackList[i].startDate.toString(),
             )
         }
-        val adapter = TrackListAdapter(activity!!.applicationContext, trackList)
+        val adapter = TrackListAdapter(requireActivity().applicationContext, trackList)
         listAdapter = adapter
     }
 
@@ -70,7 +68,6 @@ class TrackListFragment @Inject constructor() :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sTrackListFragment = this
         setHasOptionsMenu(true)
     }
 
@@ -113,13 +110,5 @@ class TrackListFragment @Inject constructor() :
 
     companion object {
         private val TAG = "mobilenetworkstracker"
-        var sTrackListFragment: TrackListFragment? = null
-        val instance: TrackListFragment?
-            get() {
-                if (sTrackListFragment == null) {
-                    sTrackListFragment = TrackListFragment()
-                }
-                return sTrackListFragment
-            }
     }
 }

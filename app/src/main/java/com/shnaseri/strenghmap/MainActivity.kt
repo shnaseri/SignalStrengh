@@ -17,6 +17,7 @@ import com.shnaseri.strenghmap.controller.TrackingManager
 import com.shnaseri.strenghmap.databinding.ActivityMainBinding
 import com.shnaseri.strenghmap.presentation.DataFragment
 import com.shnaseri.strenghmap.presentation.PagerAdapter
+import com.shnaseri.strenghmap.presentation.TrackListFragment
 import com.shnaseri.strenghmap.presentation.TrackMapFragment
 import com.shnaseri.strenghmap.telephony.CustomPhoneStateListener
 import com.shnaseri.strenghmap.telephony.TelephonyInfo
@@ -40,6 +41,15 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var mCustomPhoneStateListener: CustomPhoneStateListener
+
+    @Inject
+    lateinit var mDataFragment: DataFragment
+
+    @Inject
+    lateinit var mTrackMapFragment: TrackMapFragment
+
+    @Inject
+    lateinit var mTrackListFragment: TrackListFragment
 
     private lateinit var binding: ActivityMainBinding
 
@@ -66,7 +76,13 @@ class MainActivity : AppCompatActivity() {
         //  Setup ViewPager
         //
         mViewPager = binding.pager
-        val adapter = PagerAdapter(supportFragmentManager, tabLayout.tabCount)
+        val adapter = PagerAdapter(
+            supportFragmentManager,
+            tabLayout.tabCount,
+            mDataFragment,
+            mTrackListFragment,
+            mTrackMapFragment,
+        )
         mViewPager.adapter = adapter
         mViewPager.addOnPageChangeListener(object :
             TabLayout.TabLayoutOnPageChangeListener(tabLayout) {
@@ -74,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                 super.onPageSelected(position)
                 // Refresh network information when DataFragment is shown
                 if (position == 0) {
-                    DataFragment.instance?.updateUI()
+                    mDataFragment.updateUI()
                 }
             }
         })

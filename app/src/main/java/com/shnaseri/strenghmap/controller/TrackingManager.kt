@@ -6,7 +6,7 @@ import android.util.Log
 import com.shnaseri.strenghmap.model.Track
 import java.util.Date
 
-class TrackingManager(private val mAppContext: Context) {
+class TrackingManager(mAppContext: Context) {
     private val mPrefs: SharedPreferences
     private var mCurrentTrackId: Long
 

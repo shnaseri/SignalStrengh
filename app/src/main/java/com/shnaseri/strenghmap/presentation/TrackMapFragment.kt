@@ -36,7 +36,12 @@ import com.shnaseri.strenghmap.telephony.CustomPhoneStateListener
 import com.shnaseri.strenghmap.telephony.TelephonyInfo
 import javax.inject.Inject
 
-class TrackMapFragment @Inject constructor() :
+class TrackMapFragment constructor(
+    var mTelephonyInfo: TelephonyInfo,
+    var mTrackingManager: TrackingManager,
+    var mPositioningManager: PositioningManager,
+    var mDatabaseManager: AppDatabase
+) :
     SupportMapFragment(),
     LoaderManager.LoaderCallbacks<List<*>?> {
     private var mGoogleMap: GoogleMap? = null
@@ -49,22 +54,15 @@ class TrackMapFragment @Inject constructor() :
     private var mCurrentZoom = 16.0f
     private var mTrackMapFragment: TrackMapFragment? = null
 
-    @Inject
-    lateinit var mTelephonyInfo: TelephonyInfo
-
-    @Inject
-    lateinit var mTrackingManager: TrackingManager
-
-    @Inject
-    lateinit var mPositioningManager: PositioningManager
-
-    @Inject
-    lateinit var mDatabaseManager: AppDatabase
 
     var mPinpointList: List<PinPoint>? = null
     private val mLocationReceiver: BroadcastReceiver =
         object : LocationReceiver(mTelephonyInfo, mTrackingManager, mDatabaseManager) {
-            override fun onLocationReceived(context: Context?, loc: Location?, signalStrengths: Int) {
+            override fun onLocationReceived(
+                context: Context?,
+                loc: Location?,
+                signalStrengths: Int,
+            ) {
                 super.onLocationReceived(context, loc, signalStrengths)
                 if (!mPositioningManager.isLocationUpdatesEnabled) {
                     return
@@ -98,7 +96,7 @@ class TrackMapFragment @Inject constructor() :
         val v: View = super.onCreateView(inflater, container, savedInstanceState)
 
         // save link to GoogleMap
-         getMapAsync { p0 -> mGoogleMap = p0; }
+        getMapAsync { p0 -> mGoogleMap = p0; }
 
         // show user location
         if (ActivityCompat.checkSelfPermission(
