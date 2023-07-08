@@ -35,6 +35,7 @@ But unfortunately we couldn't depict a visualized picture from our saved data.
 ## Application Output
 we provided 3 tabs as below image. but we didn't afford to test the second and the third tab. 
 But first tab displays current data about signal strength and network information such as the network generation you're connected to. that in this picture is *LTE*.
+<br />
 <p align="center">
   <img src="images/ui.jpg" alt="ui image"/>
 </p>
