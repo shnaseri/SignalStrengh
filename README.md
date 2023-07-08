@@ -35,7 +35,7 @@ But unfortunately we couldn't depict a visualized picture from our saved data.
 ## Application Output
 we provided 3 tabs as below image. but we didn't afford to test the second and the third tab. 
 But first tab displays current data about signal strength and network information such as the network generation you're connected to. that in this picture is *LTE*.
-![ui](images\ui.jpg)
+![ui](images/ui.jpg)
 
 But about showing circles on map that represents signals strength on each location collected through our application, all things that needed to be implemented inside code has been done completely. But since google map didn't provide their API freely and for consuming tokens we had to make a payment for that in paypal and we couldn't do that. but the code for filling out API key is shown below, so if you provide API key it will displays map correctly.  
 ![map](.\images\map.jpg)
