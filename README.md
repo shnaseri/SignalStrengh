@@ -38,6 +38,6 @@ But first tab displays current data about signal strength and network informatio
 ![ui](images/ui.jpg)
 
 But about showing circles on map that represents signals strength on each location collected through our application, all things that needed to be implemented inside code has been done completely. But since google map didn't provide their API freely and for consuming tokens we had to make a payment for that in paypal and we couldn't do that. but the code for filling out API key is shown below, so if you provide API key it will displays map correctly.  
-![map](.\images\map.jpg)
-![api key](.\images\api-key.jpg)
+![map](images/map.jpg)
+![api key](images/api-key.jpg)
      
