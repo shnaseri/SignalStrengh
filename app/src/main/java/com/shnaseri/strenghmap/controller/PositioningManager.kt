@@ -28,10 +28,10 @@ class PositioningManager(private val mContext: Context) {
         val pi = getLocationPendingIntent(true)
         if (ActivityCompat.checkSelfPermission(
                 mContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION,
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 mContext,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION,
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
@@ -68,10 +68,10 @@ class PositioningManager(private val mContext: Context) {
         get() {
             if (ActivityCompat.checkSelfPermission(
                     mContext,
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION,
                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                     mContext,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 return null

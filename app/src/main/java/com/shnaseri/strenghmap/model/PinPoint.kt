@@ -26,9 +26,9 @@ data class PinPoint(
     @SerializedName("latitude")
     @ColumnInfo(name = "lat")
     var lat: Double,
-    @SerializedName("Intitude")
-    @ColumnInfo(name = "lon")
-    var long: Double,
+    @SerializedName("longitude")
+    @ColumnInfo(name = "longi")
+    var longi: Double,
     @SerializedName("eventTime")
     @ColumnInfo(name = "event_time")
     var eventTime: Int,

@@ -20,7 +20,7 @@ interface PinPointDao {
     fun insert(pinPoint: PinPoint)
 
     @Query("SELECT * FROM pinpoint WHERE `zeroId` = :key LIMIT 1")
-    fun findByKey(key: String): Flow<PinPoint?>
+    fun findByKey(key: String): PinPoint
 
     @Delete
     fun delete(pinPoint: PinPoint)

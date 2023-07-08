@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.shnaseri.strenghmap.controller.LocationReceiver
@@ -18,6 +16,8 @@ import com.shnaseri.strenghmap.controller.PositioningManager
 import com.shnaseri.strenghmap.controller.TrackingManager
 import com.shnaseri.strenghmap.databinding.ActivityMainBinding
 import com.shnaseri.strenghmap.presentation.DataFragment
+import com.shnaseri.strenghmap.presentation.PagerAdapter
+import com.shnaseri.strenghmap.presentation.TrackMapFragment
 import com.shnaseri.strenghmap.telephony.CustomPhoneStateListener
 import com.shnaseri.strenghmap.telephony.TelephonyInfo
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val toolbar: Toolbar = binding.toolbar
@@ -54,7 +54,8 @@ class MainActivity : AppCompatActivity() {
         toolbar.setLogo(R.drawable.bs4)
         toolbar.logoDescription = "logo description here"
         val tabLayout: TabLayout = binding.tabLayout
-        tabLayout.tabTextColors = ContextCompat.getColorStateList(applicationContext, R.color.theme_window_background);
+        tabLayout.tabTextColors =
+            ContextCompat.getColorStateList(applicationContext, R.color.theme_window_background)
 
         tabLayout.addTab(tabLayout.newTab().setText(resources.getText(R.string.tab_data)))
         tabLayout.addTab(tabLayout.newTab().setText(resources.getText(R.string.tab_series)))
@@ -65,24 +66,15 @@ class MainActivity : AppCompatActivity() {
         //  Setup ViewPager
         //
         mViewPager = binding.pager
-        val adapter = object : PagerAdapter(){
-            override fun getCount(): Int = tabLayout.tabCount
-
-
-            override fun isViewFromObject(view: View, `object`: Any): Boolean = true
-
-        }
+        val adapter = PagerAdapter(supportFragmentManager, tabLayout.tabCount)
         mViewPager.adapter = adapter
-        mViewPager.addOnPageChangeListener(object : TabLayout.TabLayoutOnPageChangeListener(tabLayout) {
+        mViewPager.addOnPageChangeListener(object :
+            TabLayout.TabLayoutOnPageChangeListener(tabLayout) {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                //Refresh network information when DataFragment is shown
+                // Refresh network information when DataFragment is shown
                 if (position == 0) {
                     DataFragment.instance?.updateUI()
-                }
-                //Refresh list of tracks when ListFragment is shown
-                if (position == 1) {
-                    TrackListFragment.getInstance().refreshTrackList()
                 }
             }
         })
@@ -132,16 +124,12 @@ class MainActivity : AppCompatActivity() {
         val id = item.itemId
         if (id == R.id.menu_item_new_track) {
             if (!mTrackingManager.isTrackingOn) {
-
                 // Insert record of new track into database
                 mTrackingManager.startTracking()
                 // Start notification of tracking
                 handleNotification(LocationReceiver.ACTION_START_NOTIFICATION)
                 // Change icon
                 mMenu!!.getItem(0).setIcon(R.drawable.menu_item_location_off_selector)
-                if (TrackListFragment.getInstance().isVisible()) {
-                    TrackListFragment.getInstance().refreshTrackList()
-                }
             } else if (mTrackingManager.isTrackingOn) {
                 mTrackingManager.stopTracking()
                 // Stop notification
@@ -150,11 +138,6 @@ class MainActivity : AppCompatActivity() {
                 mMenu!!.getItem(0).setIcon(R.drawable.menu_item_location_on_selector)
             }
             return true
-        } else if (id == R.id.menu_item_upload) {
-
-            // Start service to upload data
-            val uploadDataService = Intent(applicationContext, UploadDataService::class.java)
-            applicationContext.startService(uploadDataService)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -170,12 +153,9 @@ class MainActivity : AppCompatActivity() {
         mViewPager!!.currentItem = 2
         val fragmentManager: FragmentManager = supportFragmentManager
         // find currently shown fragment by tag
-        val fragment: Fragment = fragmentManager
-            .findFragmentByTag("android:switcher:" + R.id.pager + ":" + mViewPager!!.currentItem)
-        if (fragment != null) {
-            // pass current trackId to fragment if fragment exist
-            (fragment as TrackMapFragment).onTrackSelected(trackId)
-        }
+        val fragment: Fragment? =
+            fragmentManager.findFragmentByTag("android:switcher:" + R.id.pager + ":" + mViewPager!!.currentItem)
+        (fragment as TrackMapFragment).onTrackSelected(trackId)
     }
 
     /**
@@ -186,5 +166,4 @@ class MainActivity : AppCompatActivity() {
         i.action = action
         sendBroadcast(i)
     }
-
 }

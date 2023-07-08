@@ -24,7 +24,7 @@ import java.util.Date
 import java.util.Locale
 
 
-class LocationReceiver(
+open class LocationReceiver(
     private var mTelephonyInfo: TelephonyInfo,
     private var mTrackingManager: TrackingManager,
     private var mDatabaseManager: AppDatabase,
@@ -127,8 +127,8 @@ class LocationReceiver(
         }
     }
 
-    protected fun onLocationReceived(context: Context?, loc: Location?, signalStrengths: Int) {}
-    protected fun onProviderEnabledChanged(enabled: Boolean) {
+    protected open fun onLocationReceived(context: Context?, loc: Location?, signalStrengths: Int) {}
+    protected open fun onProviderEnabledChanged(enabled: Boolean) {
         Log.d(TAG, "Provider " + if (enabled) "enabled" else "disabled")
     }
 
